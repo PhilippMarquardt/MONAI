@@ -151,6 +151,9 @@ __all__ = [
     "RandKSpaceSpikeNoiseDict",
     "ForegroundMaskD",
     "ForegroundMaskDict",
+    "MultiModalityNormalizationd",
+    "MultiModalityNormalizationD",
+    "MultiModalityNormalizationDict"
 ]
 
 DEFAULT_POST_FIX = PostFix.meta()
