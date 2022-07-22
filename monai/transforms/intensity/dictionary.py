@@ -214,7 +214,26 @@ class RandGaussianNoised(RandomizableTransform, MapTransform):
             d[key] = self.rand_gaussian_noise(img=d[key], randomize=False)
         return d
 
-
+class MultiModalityNormalizationd(MapTransform):
+    backend = NormalizeIntensity.backend
+    def __init__(self, keys, threshold_low, threshold_high, subtrahend, divisor):
+        super().__init__(keys, False)
+        self.threshold_first = ThresholdIntensity(threshold = threshold_low, above = True, cval = threshold_low)
+        self.threshold_second = ThresholdIntensity(threshold = threshold_high, above = False, cval = threshold_high)
+        self.normalize = NormalizeIntensity(subtrahend = subtrahend  , divisor =divisor)
+        self.mri_normalize = NormalizeIntensity(nonzero=True, channel_wise=True)
+    def __call__(self, data):
+        d = dict(data)
+        for key in self.key_iterator(d):
+            if data['img_meta_dict']['pixdim'][0] == -1.0:
+                d[key] = self.threshold_first(d[key])
+                d[key] = self.threshold_second(d[key])
+                d[key] = self.normalize(d[key])
+            else:
+                d[key] = self.mri_normalize(d[key])
+        return d
+    
+    
 class RandRicianNoised(RandomizableTransform, MapTransform):
     """
     Dictionary-based version :py:class:`monai.transforms.RandRicianNoise`.
