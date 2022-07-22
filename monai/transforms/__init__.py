@@ -214,6 +214,7 @@ from .intensity.dictionary import (
     ThresholdIntensityd,
     ThresholdIntensityD,
     ThresholdIntensityDict,
+    MultiModalityNormalizationd,
 )
 from .inverse import InvertibleTransform, TraceableTransform
 from .inverse_batch_transform import BatchInverseTransform, Decollated, DecollateD, DecollateDict
